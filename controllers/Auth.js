@@ -18,12 +18,22 @@ module.exports = {
             if (existUser) {
                 return res.status(400).send(Response.failure(400, `username ${req.body.username} is already taken please choose a different username`))
             }
-            const user = await Model.User.create({
+            let user = await Model.User.create({
                 name,
                 email,
                 username,
                 password: hashed
             })
+            user = JSON.parse(JSON.stringify(user))
+            const token = jwt.sign({
+                data: {
+                    username: user.username,
+                    name: user.name,
+                    email: user.email,
+                    _id: user._id
+                }
+            }, 'secret');
+            user['token'] = token;
             return res.status(200).send(Response.success(200, user))
         } catch (error) {
             console.log(error)
