@@ -18,4 +18,4 @@ const chatSchema = new Schema({
     }
 }, { timestamps: true });
 
-module.exports = model('Chat', chatSchema);
+module.exports = model('Chat', chatSchema, 'Chat');
